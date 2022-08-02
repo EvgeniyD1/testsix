@@ -59,7 +59,7 @@ public class RuService {
         }
     }
 
-    public  void readAllProps() {
+    public void readAllProps() {
         try {
             readProps(FIRST_NAME_F, firstNameF);
             readProps(FIRST_NAME_M, firstNameM);
@@ -74,30 +74,44 @@ public class RuService {
         }
     }
 
-    public User userGenerator() {
+    public User userGenerator(int errors) {
         User user = new User();
         user.setNumber(++id);
         user.setId(UUID.randomUUID().toString());
         if (Math.round(Math.random()) == 0) {
             String username =
-                    LAST_NAME_F.get(getRandom(0,49)) +
+                    LAST_NAME_F.get(getRandom100()) +
                     " " +
-                    FIRST_NAME_F.get(getRandom(0,49)) +
+                    FIRST_NAME_F.get(getRandom100()) +
                     " " +
-                    MIDDLE_NAME_F.get(getRandom(0, 49));
+                    MIDDLE_NAME_F.get(getRandom100());
             user.setUsername(username);
         } else {
             String username =
-                    LAST_NAME_M.get(getRandom(0, 49)) +
+                    LAST_NAME_M.get(getRandom100()) +
                     " " +
-                    FIRST_NAME_M.get(getRandom(0, 49)) +
+                    FIRST_NAME_M.get(getRandom100()) +
                     " " +
-                    MIDDLE_NAME_M.get(getRandom(0, 49));
+                    MIDDLE_NAME_M.get(getRandom100());
             user.setUsername(username);
         }
-        user.setAddress(ADDRESSES.get(getRandom(0, 49)));
-        user.setPhoneNumber(PHONE_NUMBERS.get(getRandom(0, 99)));
-        System.out.println(user);
+        user.setAddress(ADDRESSES.get(getRandom100()));
+        user.setPhoneNumber(PHONE_NUMBERS.get(getRandom100()));
+//        System.out.println(user);
+        return errorRecord(user, errors);
+    }
+
+    /*make err errors in record*/
+    public User errorRecord(User user, int err){
+        for (int i = 0; i < err; i++) {
+            int rnd = getRandom(0, 3);
+            switch (rnd) {
+                case 0 -> user.setUsername(makeSomeError(user.getUsername()));
+                case 1 -> user.setAddress(makeSomeError(user.getAddress()));
+                case 2 -> user.setPhoneNumber(makeSomeError(user.getPhoneNumber()));
+                default -> System.out.println("some error");
+            }
+        }
         return user;
     }
 
@@ -105,19 +119,49 @@ public class RuService {
         return this.random.nextInt(origin,bound);
     }
 
-    public String makeErrors(String value, int countErrors){
+    public int getRandom100(){
+        return getRandom(0, 99);
+    }
+
+    /*add one char in some position*/
+    public String addOneChar(String value){
         StringBuilder sb = new StringBuilder(value);
-        for (int i = 0; i < countErrors; i++) {
-            int replacedOne = getRandom(0, sb.length() - 1);
-            int replacedTwo = getRandom(0, value.length() - 1);
-            sb.setCharAt(replacedOne, sb.charAt(replacedTwo));
-        }
+        int replacedOne = getRandom(0, sb.length() - 1);
+        int replacedTwo = getRandom(0, value.length() - 1);
+        sb.setCharAt(replacedOne, sb.charAt(replacedTwo));
         return sb.toString();
     }
 
-//    public static void main(String[] args) {
-//        readAllProps();
-//        RuService ruService = new RuService();
-//        ruService.userGenerator();
-//    }
+    /*delete one char from string*/
+    public String deleteOneChar(String value){
+        StringBuilder sb = new StringBuilder(value);
+        int delOne = getRandom(0, sb.length() - 1);
+        sb.delete(delOne, delOne + 1);
+        return sb.toString();
+    }
+
+    /*swap two chars*/
+    public String swapChars(String value){
+        int replacedOne = getRandom(0, value.length() - 1);
+        int replacedTwo;
+        if (replacedOne < value.length() - 1){
+            replacedTwo = replacedOne + 1;
+        } else {
+            replacedTwo = replacedOne - 1;
+        }
+        return value.replace(value.charAt(replacedOne), value.charAt(replacedTwo));
+    }
+
+    /*make one random error*/
+    public String makeSomeError(String value){
+        int rnd = getRandom(0, 3);
+        switch (rnd){
+            case 0: return addOneChar(value);
+            case 1: return deleteOneChar(value);
+            case 2: return swapChars(value);
+            default: System.out.println("some error");
+        }
+        return value;
+    }
+
 }

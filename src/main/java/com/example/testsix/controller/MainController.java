@@ -3,6 +3,7 @@ package com.example.testsix.controller;
 import com.example.testsix.domain.User;
 import com.example.testsix.service.RuService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -18,14 +19,14 @@ public class MainController {
     }
 
     @GetMapping
-    public List<User> getUser(){
+    public List<User> getUser(@RequestParam(required = false, defaultValue = "0") Integer errors){
         if (RuService.FIRST_NAME_F.isEmpty()){
             ruService.readAllProps();
         }
 //        RuService.id = 0L;
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            users.add(ruService.userGenerator());
+            users.add(ruService.userGenerator(errors));
         }
         return users;
     }
