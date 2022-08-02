@@ -1,6 +1,7 @@
 package com.example.testsix.service;
 
 import com.example.testsix.domain.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -16,22 +17,22 @@ import java.util.UUID;
 @Service
 public class RuService {
 
-//    @Value("${props.ru.first_name_f}")
-//    private static String firstNameF;
-//    @Value("${props.ru.first_name_m}")
-//    private static String firstNameM;
-//    @Value("${props.ru.middle_name_f}")
-//    private static String middleNameF;
-//    @Value("${props.ru.middle_name_m}")
-//    private static String middleNameM;
-//    @Value("${props.ru.last_name_f}")
-//    private static String lastNameF;
-//    @Value("${props.ru.last_name_m}")
-//    private static String lastNameM;
-//    @Value("${props.ru.addresses}")
-//    private static String addressesR;
-//    @Value("${props.ru.phone_numbers}")
-//    private static String phoneNumbers;
+    @Value("${props.ru.first_name_f}")
+    private String firstNameF;
+    @Value("${props.ru.first_name_m}")
+    private String firstNameM;
+    @Value("${props.ru.middle_name_f}")
+    private String middleNameF;
+    @Value("${props.ru.middle_name_m}")
+    private String middleNameM;
+    @Value("${props.ru.last_name_f}")
+    private String lastNameF;
+    @Value("${props.ru.last_name_m}")
+    private String lastNameM;
+    @Value("${props.ru.addresses}")
+    private String addressesR;
+    @Value("${props.ru.phone_numbers}")
+    private String phoneNumbers;
 
     public static final List<String> FIRST_NAME_F = new ArrayList<>();
     public static final List<String> FIRST_NAME_M = new ArrayList<>();
@@ -45,7 +46,7 @@ public class RuService {
     public static Long id = 0L;
     Random random = new Random();
 
-    public static void readProps(List<String> props, String path) throws IOException {
+    public void readProps(List<String> props, String path) throws IOException {
         ClassPathResource res = new ClassPathResource(path);
         File file = new File(res.getURI().getPath());
         String line;
@@ -56,19 +57,18 @@ public class RuService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        System.out.println(props);
     }
 
-    public static void readAllProps() {
+    public  void readAllProps() {
         try {
-            readProps(FIRST_NAME_F, "props/ru/first_name_f.txt");
-            readProps(FIRST_NAME_M, "props/ru/first_name_m.txt");
-            readProps(MIDDLE_NAME_F, "props/ru/middle_name_f.txt");
-            readProps(MIDDLE_NAME_M, "props/ru/middle_name_m.txt");
-            readProps(LAST_NAME_F, "props/ru/last_name_f.txt");
-            readProps(LAST_NAME_M, "props/ru/last_name_m.txt");
-            readProps(ADDRESSES, "props/ru/addresses.txt");
-            readProps(PHONE_NUMBERS, "props/ru/phone_numbers.txt");
+            readProps(FIRST_NAME_F, firstNameF);
+            readProps(FIRST_NAME_M, firstNameM);
+            readProps(MIDDLE_NAME_F, middleNameF);
+            readProps(MIDDLE_NAME_M, middleNameM);
+            readProps(LAST_NAME_F, lastNameF);
+            readProps(LAST_NAME_M, lastNameM);
+            readProps(ADDRESSES, addressesR);
+            readProps(PHONE_NUMBERS, phoneNumbers);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,6 +103,16 @@ public class RuService {
 
     public int getRandom(int origin, int bound){
         return this.random.nextInt(origin,bound);
+    }
+
+    public String makeErrors(String value, int countErrors){
+        StringBuilder sb = new StringBuilder(value);
+        for (int i = 0; i < countErrors; i++) {
+            int replacedOne = getRandom(0, sb.length() - 1);
+            int replacedTwo = getRandom(0, value.length() - 1);
+            sb.setCharAt(replacedOne, sb.charAt(replacedTwo));
+        }
+        return sb.toString();
     }
 
 //    public static void main(String[] args) {

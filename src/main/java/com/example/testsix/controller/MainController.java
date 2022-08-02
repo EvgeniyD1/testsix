@@ -20,7 +20,7 @@ public class MainController {
     @GetMapping
     public List<User> getUser(){
         if (RuService.FIRST_NAME_F.isEmpty()){
-            RuService.readAllProps();
+            ruService.readAllProps();
         }
 //        RuService.id = 0L;
         List<User> users = new ArrayList<>();
