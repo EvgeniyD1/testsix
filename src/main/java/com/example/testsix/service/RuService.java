@@ -79,30 +79,24 @@ public class RuService {
         user.setNumber(++id);
         user.setId(UUID.randomUUID().toString());
         if (Math.round(Math.random()) == 0) {
-            String username =
-                    LAST_NAME_F.get(getRandom100()) +
-                    " " +
-                    FIRST_NAME_F.get(getRandom100()) +
-                    " " +
-                    MIDDLE_NAME_F.get(getRandom100());
+            String username = usernameGenerator(LAST_NAME_F, FIRST_NAME_F, MIDDLE_NAME_F);
             user.setUsername(username);
         } else {
-            String username =
-                    LAST_NAME_M.get(getRandom100()) +
-                    " " +
-                    FIRST_NAME_M.get(getRandom100()) +
-                    " " +
-                    MIDDLE_NAME_M.get(getRandom100());
+            String username = usernameGenerator(LAST_NAME_M, FIRST_NAME_M, MIDDLE_NAME_M);
             user.setUsername(username);
         }
         user.setAddress(ADDRESSES.get(getRandom100()));
         user.setPhoneNumber(PHONE_NUMBERS.get(getRandom100()));
-//        System.out.println(user);
         return errorRecord(user, errors);
     }
 
+    /*generate username*/
+    public String usernameGenerator(List<String> lastName, List<String> firstName, List<String> middleName) {
+        return lastName.get(getRandom100()) + " " + firstName.get(getRandom100()) + " " + middleName.get(getRandom100());
+    }
+
     /*make err errors in record*/
-    public User errorRecord(User user, int err){
+    public User errorRecord(User user, int err) {
         for (int i = 0; i < err; i++) {
             int rnd = getRandom(0, 3);
             switch (rnd) {
@@ -115,16 +109,16 @@ public class RuService {
         return user;
     }
 
-    public int getRandom(int origin, int bound){
-        return this.random.nextInt(origin,bound);
+    public int getRandom(int origin, int bound) {
+        return this.random.nextInt(origin, bound);
     }
 
-    public int getRandom100(){
+    public int getRandom100() {
         return getRandom(0, 99);
     }
 
     /*add one char in some position*/
-    public String addOneChar(String value){
+    public String addOneChar(String value) {
         StringBuilder sb = new StringBuilder(value);
         int replacedOne = getRandom(0, sb.length() - 1);
         int replacedTwo = getRandom(0, value.length() - 1);
@@ -133,7 +127,7 @@ public class RuService {
     }
 
     /*delete one char from string*/
-    public String deleteOneChar(String value){
+    public String deleteOneChar(String value) {
         StringBuilder sb = new StringBuilder(value);
         int delOne = getRandom(0, sb.length() - 1);
         sb.delete(delOne, delOne + 1);
@@ -141,10 +135,10 @@ public class RuService {
     }
 
     /*swap two chars*/
-    public String swapChars(String value){
+    public String swapChars(String value) {
         int replacedOne = getRandom(0, value.length() - 1);
         int replacedTwo;
-        if (replacedOne < value.length() - 1){
+        if (replacedOne < value.length() - 1) {
             replacedTwo = replacedOne + 1;
         } else {
             replacedTwo = replacedOne - 1;
@@ -153,13 +147,17 @@ public class RuService {
     }
 
     /*make one random error*/
-    public String makeSomeError(String value){
+    public String makeSomeError(String value) {
         int rnd = getRandom(0, 3);
-        switch (rnd){
-            case 0: return addOneChar(value);
-            case 1: return deleteOneChar(value);
-            case 2: return swapChars(value);
-            default: System.out.println("some error");
+        switch (rnd) {
+            case 0:
+                return addOneChar(value);
+            case 1:
+                return deleteOneChar(value);
+            case 2:
+                return swapChars(value);
+            default:
+                System.out.println("some error");
         }
         return value;
     }
