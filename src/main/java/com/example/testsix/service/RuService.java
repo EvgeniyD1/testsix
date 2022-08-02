@@ -46,6 +46,7 @@ public class RuService {
     public static Long id = 0L;
     Random random = new Random();
 
+    /*read props from path*/
     public void readProps(List<String> props, String path) throws IOException {
         ClassPathResource res = new ClassPathResource(path);
         File file = new File(res.getURI().getPath());
@@ -59,6 +60,7 @@ public class RuService {
         }
     }
 
+    /*read all*/
     public void readAllProps() {
         try {
             readProps(FIRST_NAME_F, firstNameF);
@@ -74,6 +76,7 @@ public class RuService {
         }
     }
 
+    /*generate user with errors errors*/
     public User userGenerator(int errors) {
         User user = new User();
         user.setNumber(++id);
