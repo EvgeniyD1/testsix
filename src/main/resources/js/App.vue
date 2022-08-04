@@ -14,6 +14,7 @@
             :max="10"
             :step="1"
             thumb-label
+            @update:modelValue="getErrors"
         ></v-slider>
       </template>
     </v-app-bar>
@@ -42,6 +43,8 @@
       </tbody>
     </v-table>
 
+    <div v-else style="text-align: center; line-height: 150px">
+      <h1>select records type with buttons and use slider to generate errors</h1></div>
     <div ref="observer"></div>
   </v-app>
 </template>
@@ -58,6 +61,14 @@ export default {
     }
   },
   methods: {
+    async getErrors() {
+      if (this.type!=='') {
+        this.records = [];
+        let url = '/' + this.type + '?errors=' + this.errors;
+        const response = await axios.get(url);
+        this.records = [...this.records, ...response.data];
+      }
+    },
     async getRuUsers() {
       if (this.type!=='ru') this.records = [];
       let url = '/ru?errors=' + this.errors;
@@ -80,21 +91,6 @@ export default {
       this.records = [...this.records, ...response.data];
     }
   },
-  // mounted() {
-  //   window.onscroll = () => {
-  //     const el = document.documentElement;
-  //     const isBottomOfScreen = el.scrollTop + window.innerHeight === el.offsetHeight;
-  //     if (isBottomOfScreen) {
-  //       console.log(isBottomOfScreen)
-  //       if (this.type==='ru') this.getRuUsers();
-  //       if (this.type==='ua') this.getUaUsers();
-  //       if (this.type==='us') this.getUsUsers();
-  //     }
-  //   }
-  // },
-  // beforeUnmount() {
-  //   window.onscroll = null
-  // }
   mounted() {
     const options = {
       rootMargin: '0px',

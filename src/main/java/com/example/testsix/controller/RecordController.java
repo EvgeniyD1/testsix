@@ -35,6 +35,8 @@ public class RecordController {
         if (PropsService.FIRST_NAME_F_RU.isEmpty()){
             propsService.readRuProps();
         }
+        uaService.setId(0L);
+        usService.setId(0L);
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             users.add(ruService.ruUsersGenerator(errors));
@@ -48,6 +50,8 @@ public class RecordController {
         if (PropsService.FIRST_NAME_F_UA.isEmpty()){
             propsService.readUaProps();
         }
+        ruService.setId(0L);
+        usService.setId(0L);
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             users.add(uaService.uaUsersGenerator(errors));
@@ -60,6 +64,8 @@ public class RecordController {
         if (PropsService.FIRST_NAME_F_US.isEmpty()){
             propsService.readUsProps();
         }
+        ruService.setId(0L);
+        uaService.setId(0L);
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             users.add(usService.usUsersGenerator(errors));
